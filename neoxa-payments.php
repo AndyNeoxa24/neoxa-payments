@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Neoxa Payments
- * Plugin URI: https://github.com/yourusername/neoxa-payments
+ * Plugin URI: https://github.com/AndyNeoxa24/neoxa-payments
  * Description: Accept Neoxa and Neoxa asset payments on your WordPress site
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Andy Niemand - Neoxa Founder
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('NEOXA_PAYMENTS_VERSION', '1.0.0');
+define('NEOXA_PAYMENTS_VERSION', '1.0.1');
 define('NEOXA_PAYMENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NEOXA_PAYMENTS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -39,16 +39,20 @@ function neoxa_payments_missing_wc_notice() {
     <?php
 }
 
-// Include required files
-require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-neoxa-payments.php';
-require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-neoxa-rpc.php';
-require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'admin/class-neoxa-admin.php';
-require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-wc-neoxa-gateway.php';
-
 // Initialize the plugin
 function neoxa_payments_init() {
     if (!neoxa_payments_check_woocommerce()) {
         return;
+    }
+
+    // Include required files
+    require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-neoxa-payments.php';
+    require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-neoxa-rpc.php';
+    require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'admin/class-neoxa-admin.php';
+    
+    // Only load gateway class if WooCommerce is active
+    if (class_exists('WC_Payment_Gateway')) {
+        require_once NEOXA_PAYMENTS_PLUGIN_DIR . 'includes/class-wc-neoxa-gateway.php';
     }
     
     // Initialize main plugin class
@@ -65,7 +69,9 @@ add_action('plugins_loaded', 'neoxa_payments_init');
 
 // Add the Neoxa Gateway to WooCommerce
 function neoxa_add_gateway_class($gateways) {
-    $gateways[] = 'WC_Neoxa_Gateway';
+    if (class_exists('WC_Payment_Gateway')) {
+        $gateways[] = 'WC_Neoxa_Gateway';
+    }
     return $gateways;
 }
 
