@@ -11,6 +11,9 @@
  * WC requires at least: 3.0.0
  * WC tested up to: 8.0.0
  * Requires PHP: 7.0
+ * 
+ * This plugin supports WooCommerce HPOS/Custom Order Tables
+ * @property-read bool $supports_feature
  */
 
 if (!defined('ABSPATH')) {
@@ -21,6 +24,14 @@ if (!defined('ABSPATH')) {
 define('NEOXA_PAYMENTS_VERSION', '1.0.3');
 define('NEOXA_PAYMENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NEOXA_PAYMENTS_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Declare HPOS compatibility
+add_action('before_woocommerce_init', function() {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('remote_logging', __FILE__, true);
+    }
+});
 
 // Check if WooCommerce is active
 function neoxa_payments_check_woocommerce() {
