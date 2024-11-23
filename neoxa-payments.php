@@ -3,13 +3,14 @@
  * Plugin Name: Neoxa Payments
  * Plugin URI: https://github.com/AndyNeoxa24/neoxa-payments
  * Description: Accept Neoxa and Neoxa asset payments on your WordPress site
- * Version: 1.0.1
+ * Version: 1.0.3
  * Author: Andy Niemand - Neoxa Founder
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: neoxa-payments
  * WC requires at least: 3.0.0
  * WC tested up to: 8.0.0
+ * Requires PHP: 7.0
  */
 
 if (!defined('ABSPATH')) {
@@ -17,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('NEOXA_PAYMENTS_VERSION', '1.0.1');
+define('NEOXA_PAYMENTS_VERSION', '1.0.3');
 define('NEOXA_PAYMENTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('NEOXA_PAYMENTS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
