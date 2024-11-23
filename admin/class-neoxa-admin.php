@@ -15,7 +15,6 @@ class Neoxa_Admin {
         wp_enqueue_style('neoxa-admin-css', NEOXA_PAYMENTS_PLUGIN_URL . 'admin/css/admin.css', array(), NEOXA_PAYMENTS_VERSION);
         wp_enqueue_script('neoxa-admin-js', NEOXA_PAYMENTS_PLUGIN_URL . 'admin/js/admin.js', array('jquery'), NEOXA_PAYMENTS_VERSION, true);
         
-        // Add nonce for AJAX
         wp_localize_script('neoxa-admin-js', 'neoxaAdmin', array(
             'nonce' => wp_create_nonce('neoxa_admin'),
             'pluginUrl' => NEOXA_PAYMENTS_PLUGIN_URL
@@ -29,7 +28,7 @@ class Neoxa_Admin {
             'manage_options',
             'neoxa-payments',
             array($this, 'create_admin_page'),
-            NEOXA_PAYMENTS_PLUGIN_URL . 'assets/images/neoxa-logo.png'
+            'dashicons-money-alt'
         );
     }
     
@@ -38,31 +37,47 @@ class Neoxa_Admin {
         $this->init_rpc();
         ?>
         <div class="wrap">
-            <div class="neoxa-admin-header">
-                <img src="<?php echo esc_url(NEOXA_PAYMENTS_PLUGIN_URL . 'assets/images/neoxa-logo.png'); ?>" 
-                     alt="Neoxa Logo" 
-                     class="neoxa-logo"
-                     style="height: 32px; margin-right: 10px; vertical-align: middle;">
-                <h2>Neoxa Payments Settings</h2>
-            </div>
+            <h1>Neoxa Payments Settings</h1>
             
             <div class="neoxa-admin-container">
                 <div class="neoxa-admin-main">
-                    <form method="post" action="options.php">
-                        <?php
-                        settings_fields('neoxa_payments_settings');
-                        do_settings_sections('neoxa-payments');
-                        submit_button();
-                        ?>
-                    </form>
+                    <div class="neoxa-admin-box">
+                        <h2>RPC Configuration</h2>
+                        <form method="post" action="options.php">
+                            <?php
+                            settings_fields('neoxa_payments_settings');
+                            do_settings_sections('neoxa-payments');
+                            ?>
+
+                            <?php if ($this->test_rpc_connection()): ?>
+                                <div class="neoxa-admin-box neoxa-success">
+                                    <h3>✓ RPC Connection Status</h3>
+                                    <p>Successfully connected to Neoxa wallet!</p>
+                                </div>
+
+                                <div class="neoxa-admin-box">
+                                    <h3>Asset Selection</h3>
+                                    <?php $this->display_available_assets(); ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="neoxa-admin-box neoxa-error">
+                                    <h3>⚠ RPC Connection Status</h3>
+                                    <p>Could not connect to Neoxa wallet. Please check your settings.</p>
+                                    <button type="button" class="button" id="test-rpc-connection">Test Connection</button>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php submit_button(); ?>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="neoxa-admin-sidebar">
                     <div class="neoxa-admin-box">
                         <h3>Wallet Configuration Requirements</h3>
                         <p>Your Neoxa wallet's configuration file must include these settings:</p>
-                        <pre>
-daemon=1
+                        <div class="config-box">
+                            <pre>daemon=1
 txindex=1
 assetindex=1
 addressindex=1
@@ -81,30 +96,11 @@ rpcworkqueue=25000
 rpcthreads=16
 maxconnections=125
 maxuploadtarget=5000</pre>
-                        <button class="button copy-config">Copy Configuration</button>
+                        </div>
+                        <button type="button" class="button copy-config">Copy Configuration</button>
                     </div>
-
-                    <?php if ($this->test_rpc_connection()): ?>
-                    <div class="neoxa-admin-box neoxa-success">
-                        <h3>✓ RPC Connection Status</h3>
-                        <p>Successfully connected to Neoxa wallet!</p>
-                    </div>
-                    <?php else: ?>
-                    <div class="neoxa-admin-box neoxa-error">
-                        <h3>⚠ RPC Connection Status</h3>
-                        <p>Could not connect to Neoxa wallet. Please check your settings.</p>
-                        <button class="button" id="test-rpc-connection">Test Connection</button>
-                    </div>
-                    <?php endif; ?>
                 </div>
             </div>
-
-            <?php if ($this->test_rpc_connection()): ?>
-            <div class="neoxa-admin-assets">
-                <h3>Available Assets</h3>
-                <?php $this->display_available_assets(); ?>
-            </div>
-            <?php endif; ?>
         </div>
         <?php
     }
@@ -139,30 +135,29 @@ maxuploadtarget=5000</pre>
             $settings = get_option('neoxa_payments_settings');
             $accepted_assets = isset($settings['accepted_assets']) ? $settings['accepted_assets'] : array('NEOXA');
             ?>
-            <div class="neoxa-assets-grid">
-                <div class="neoxa-asset-item neoxa-main">
-                    <label>
-                        <input type="checkbox" name="neoxa_payments_settings[accepted_assets][]" 
-                               value="NEOXA" <?php checked(in_array('NEOXA', $accepted_assets)); ?> 
-                               disabled checked>
-                        <span class="asset-name">NEOXA (Main Currency)</span>
-                    </label>
-                </div>
-                <?php foreach ($assets as $name => $asset): ?>
-                    <?php if ($name !== 'NEOXA'): ?>
-                    <div class="neoxa-asset-item">
-                        <label>
-                            <input type="checkbox" name="neoxa_payments_settings[accepted_assets][]" 
-                                   value="<?php echo esc_attr($name); ?>"
-                                   <?php checked(in_array($name, $accepted_assets)); ?>>
-                            <span class="asset-name"><?php echo esc_html($name); ?></span>
-                            <?php if (isset($asset['amount'])): ?>
-                            <span class="asset-supply">Supply: <?php echo esc_html($asset['amount']); ?></span>
+            <div class="neoxa-asset-selection">
+                <p>Select which assets you want to accept as payment:</p>
+                
+                <!-- NEOXA is always accepted -->
+                <input type="hidden" name="neoxa_payments_settings[accepted_assets][]" value="NEOXA">
+                
+                <div class="asset-select-container">
+                    <select name="neoxa_payments_settings[accepted_assets][]" multiple="multiple" class="asset-select">
+                        <option value="NEOXA" selected disabled>NEOXA (Main Currency - Always Enabled)</option>
+                        <?php foreach ($assets as $name => $asset): ?>
+                            <?php if ($name !== 'NEOXA'): ?>
+                                <option value="<?php echo esc_attr($name); ?>" 
+                                        <?php selected(in_array($name, $accepted_assets)); ?>>
+                                    <?php echo esc_html($name); ?>
+                                    <?php if (isset($asset['amount'])): ?>
+                                        (Supply: <?php echo esc_html($asset['amount']); ?>)
+                                    <?php endif; ?>
+                                </option>
                             <?php endif; ?>
-                        </label>
-                    </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <p class="description">Hold Ctrl (Windows) or Command (Mac) to select multiple assets.</p>
             </div>
             <?php
         } catch (Exception $e) {
