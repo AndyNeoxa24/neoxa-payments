@@ -1,0 +1,63 @@
+# WordPress
+wp-config.php
+wp-content/*
+!wp-content/plugins/
+wp-content/plugins/*
+!wp-content/plugins/neoxa-payments/
+*.log
+*.sql
+*.sqlite
+
+# Development
+node_modules/
+vendor/
+composer.lock
+package-lock.json
+.env
+.env.*
+
+# IDE & System Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Build & Temporary Files
+/build/
+/dist/
+.tmp/
+*.tmp
+*.bak
+*.cache
+
+# Testing
+/tests/coverage/
+phpunit.xml
+.phpunit.result.cache
+
+# Documentation
+/docs/
+
+# Dependency directories
+/bower_components/
+/jspm_packages/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Plugin specific
+# Add any plugin-specific files or directories that should be ignored

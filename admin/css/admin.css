@@ -1,0 +1,351 @@
+/* Neoxa Payments Admin Styles */
+@import 'neoxa-icon.css';
+
+/* Main Layout */
+.neoxa-admin-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    max-width: 1200px;
+}
+
+/* Header with Logo */
+.neoxa-admin-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.neoxa-admin-header .neoxa-logo {
+    height: 40px;
+    width: auto;
+    margin-right: 15px;
+}
+
+.neoxa-admin-header h2 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.3;
+    color: #1d2327;
+}
+
+.neoxa-admin-main {
+    flex: 2;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.neoxa-admin-sidebar {
+    flex: 1;
+}
+
+/* Info Boxes */
+.neoxa-admin-box {
+    background: #fff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.neoxa-admin-box h3 {
+    margin: 0 0 15px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 18px;
+    color: #1d2327;
+    display: flex;
+    align-items: center;
+}
+
+.neoxa-admin-box h3 img {
+    height: 24px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.neoxa-admin-box pre {
+    background: #f6f7f7;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    border: 1px solid #e2e4e7;
+    margin: 0;
+}
+
+/* Status Indicators */
+.neoxa-success {
+    border-left: 4px solid #00a32a;
+}
+
+.neoxa-error {
+    border-left: 4px solid #d63638;
+}
+
+.neoxa-warning {
+    border-left: 4px solid #dba617;
+}
+
+/* Assets Grid */
+.neoxa-admin-assets {
+    background: #fff;
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.neoxa-admin-assets h3 {
+    display: flex;
+    align-items: center;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.neoxa-admin-assets h3 img {
+    height: 24px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.neoxa-assets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.neoxa-asset-item {
+    background: #f6f7f7;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #e2e4e7;
+    transition: all 0.2s ease;
+}
+
+.neoxa-asset-item:hover {
+    border-color: #2271b1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.neoxa-asset-item.neoxa-main {
+    background: #f0f6fc;
+    border-color: #2271b1;
+}
+
+.neoxa-asset-item label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.neoxa-asset-item input[type="checkbox"] {
+    margin: 0;
+    border-color: #8c8f94;
+}
+
+.neoxa-asset-item input[type="checkbox"]:checked {
+    background-color: #2271b1;
+    border-color: #2271b1;
+}
+
+.asset-name {
+    font-weight: 600;
+    flex: 1;
+    color: #1d2327;
+}
+
+.asset-supply {
+    font-size: 12px;
+    color: #646970;
+    background: rgba(0,0,0,0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+/* Form Styles */
+.form-table {
+    margin-top: 20px;
+}
+
+.form-table th {
+    width: 200px;
+    padding: 20px 10px 20px 0;
+}
+
+.form-table td {
+    padding: 20px 10px;
+}
+
+.form-table input[type="text"],
+.form-table input[type="password"] {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+
+.form-table input[type="text"]:focus,
+.form-table input[type="password"]:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* Error States */
+.error-message {
+    color: #d63638;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+input.error {
+    border-color: #d63638 !important;
+}
+
+/* Buttons */
+.neoxa-admin-box .button {
+    margin-top: 15px;
+}
+
+.copy-config {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    color: #646970;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    background-color: #1d2327;
+    color: #fff;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Payment Gateway Icon */
+.payment_method_neoxa img {
+    max-height: 32px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .neoxa-admin-container {
+        flex-direction: column;
+    }
+    
+    .neoxa-assets-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-table input[type="text"],
+    .form-table input[type="password"] {
+        width: 100%;
+    }
+
+    .form-table th {
+        padding-bottom: 5px;
+    }
+
+    .form-table td {
+        padding-top: 5px;
+    }
+
+    .neoxa-admin-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .neoxa-admin-header .neoxa-logo {
+        margin: 0 0 10px 0;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .neoxa-admin-header,
+    .neoxa-admin-main,
+    .neoxa-admin-box,
+    .neoxa-admin-assets {
+        background: #1d2327;
+        color: #f0f0f1;
+    }
+
+    .neoxa-admin-box h3,
+    .neoxa-admin-header h2 {
+        color: #f0f0f1;
+    }
+
+    .neoxa-asset-item {
+        background: #2c3338;
+        border-color: #3c434a;
+    }
+
+    .neoxa-asset-item.neoxa-main {
+        background: #2c3338;
+        border-color: #2271b1;
+    }
+
+    .asset-name {
+        color: #f0f0f1;
+    }
+
+    .asset-supply {
+        background: rgba(255,255,255,0.05);
+    }
+
+    .neoxa-admin-box pre {
+        background: #2c3338;
+        border-color: #3c434a;
+        color: #f0f0f1;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        background: #2c3338;
+        color: #f0f0f1;
+        border-color: #3c434a;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: #2271b1;
+    }
+}

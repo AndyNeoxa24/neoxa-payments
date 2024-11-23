@@ -1,0 +1,68 @@
+name: Release Neoxa Payments Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Create Release Folder
+      run: |
+        mkdir -p build/neoxa-payments
+        
+    - name: Copy Files
+      run: |
+        cp -r admin build/neoxa-payments/
+        cp -r includes build/neoxa-payments/
+        cp -r assets build/neoxa-payments/
+        cp neoxa-payments.php build/neoxa-payments/
+        cp README.md build/neoxa-payments/
+        cp LICENSE build/neoxa-payments/
+        
+    - name: Create ZIP Archive
+      run: |
+        cd build
+        zip -r neoxa-payments.zip neoxa-payments/
+        cd ..
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Neoxa Payments WordPress Plugin Release
+          
+          This release includes:
+          - WooCommerce integration for Neoxa payments
+          - Support for Neoxa assets
+          - Admin interface for configuration
+          - Real-time payment verification
+          - Automatic order status updates
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/neoxa-payments.zip
+        asset_name: neoxa-payments.zip
+        asset_content_type: application/zip
+
+    - name: Verify Release
+      run: |
+        echo "Release created successfully"
+        echo "Tag: ${{ github.ref }}"
+        echo "Archive: neoxa-payments.zip"
